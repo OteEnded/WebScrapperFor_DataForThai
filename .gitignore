@@ -1,0 +1,10 @@
+.history
+.vscode-test
+package-lock.json
+./package-lock.json
+node_modules
+node_modules/
+.env
+.env.json
+logs
+logs/
