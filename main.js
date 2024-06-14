@@ -5,6 +5,7 @@ const csv = require('csv-parser');
 const path = require('path');
 
 const utilites = require('./theUtility.js');
+const { title } = require('process');
 
 // Function to connect to web and return page
 async function connectToWeb(url) {
@@ -118,10 +119,10 @@ const targetDir = "./Target/";
             for (let companyId of companyIds) {
                 // Check if empty string
                 if (companyId === '')  continue;
-                utilites.debug("Working on company id:", companyId, "(catagory id:", workingCatagoryId, ")", "[", companyIds.indexOf(companyId) + 1, "/", companyIds.length, "]");
+                utilites.debug("Working on company id:", companyId, "(catagory id:", workingCatagoryId, ")", "[", companyIds.indexOf(companyId) + 1, "/", companyIds.length - 1, "]");
                 // Check if done
                 if (checkIfDone(companyId, targetDir + workingCatagoryId + '.json')) {
-                    utilites.debug("Company id " + companyId + " is already done");
+                    utilites.debug("Company id " + companyId + " is already done.");
                     continue;
                 }
                 utilites.debug("Starting to scrape data for company:", companyId);
@@ -174,6 +175,11 @@ const targetDir = "./Target/";
                 await closeConnection(browser);
             }
         }
+        utilites.debug("Done");
+        utilites.notifyCompletion(
+            "Task Completed",
+            "Done scraping data for all companies that defined in assigned folder"
+        );
     } catch (error) {
         utilites.debug('Error in main function:', error);
     }
