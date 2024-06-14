@@ -8,5 +8,5 @@ node_modules/
 .env.json
 logs
 logs/
-# Assigned/
-# Target/
+Assigned/
+Target/
