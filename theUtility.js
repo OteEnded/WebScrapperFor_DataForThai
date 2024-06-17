@@ -74,12 +74,12 @@ function writeJsonFile(filePath, data) {
 }
 
 // Function to read JSON file to Object
-function readJsonFile(filePath){
-    debug("theUtility[readJSONFile]: Reading JSON file from", filePath)
+function readJsonFile(filePath, isDebug = true){
+    if (isDebug) debug("theUtility[readJSONFile]: Reading JSON file from", filePath)
     try {
         const jsonData = fs.readFileSync(filePath, 'utf8');
         const data = JSON.parse(jsonData);
-        debug("theUtility[readJSONFile]: Data from", filePath, "can be read successfully and will be return.")
+        if (isDebug) debug("theUtility[readJSONFile]: Data from", filePath, "can be read successfully and will be return.")
         return data
     } catch (err) {
         console.error('theUtility[readJSONFile]: ERROR, cannot read file from', filePath);
@@ -90,7 +90,7 @@ function readJsonFile(filePath){
 
 // Function to get .env data
 function getEnv() {
-    return readJsonFile('.env.json');
+    return readJsonFile('.env.json', false);
 }
 
 function isFileExists(filePath) {
