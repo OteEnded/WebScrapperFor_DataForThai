@@ -1,12 +1,47 @@
-## DataforthaiWebscrapperV2
+# DataforthaiWebscrapperV2
 
 This project is a web scraper program for a specific website called DataForThai (www.dataforthai.com). It is primarily written in JavaScript to make requests to the site, perform pre-indexing, and provide utility tools for this project. We also use Pandas in Python for further analysis and table editing.
 
+## Collaborators
+
+- [OteEnded](https://github.com/OteEnded) [Project Lead, JavaScript Development]
+- [BJesaya](https://github.com/BJesaya) [Data Scientist, Data Analysis & Data Acquisition]
+
+## How to Use This Project
+
+Follow these steps to run this project:
+
+1. Clone the repository: 
+    ```
+    git clone <repository_url>
+    ```
+2. Install Node.js (major version 18). You can download it from [here](https://nodejs.org/en/download/).
+3. Navigate to the root of the project using the terminal:
+    ```
+    cd path_to_project
+    ```
+4. Install the necessary packages:
+    ```
+    npm install
+    ```
+5. Acquire a login token from [DataForThai](https://www.dataforthai.com/).
+6. Rename the `.env-example.json` file to `.env.json` and replace the `value` key in the `cookie` object with your token.
+7. Move the company ID list by category that you want to scrape from `./DataForThaiCompanyIdsByCategories` to `./Assigned`.
+8. Run `main.js` or type in the terminal:
+    ```
+    npm start
+    ```
+9. Wait until the process is done. The results will be in the `./Target` directory as JSON files.
+10. Import/convert the JSON files to your desired format. You can convert them to a DataFrame in pandas to process the data further.
+
+
 ## Story of the Project
+
+### Background
 
 This is actually the V2 of the project. We were almost done with the last step of pulling the data we needed, but the journey was not that easy. The website we were trying to pull the data from was more complicated than we thought. The data structure was not clearly sorted out and had some conflicts in a few groups of data. So, we had to replan our project. Since everything was not going along with the first, second, or even the last plan from the V1 project, it almost felt like we had to fix everything we did, everything we coded. So, we decided to start a new one from the beginning again, and that became this V2 project as you see in this repo. I hope you, the one who got into this repo and is interested, can make good use of this study case of ours. Thank you for your interest.
 
-## Problems, Solutions, And the process of doing this project
+### Challenges, Solutions, and the Workflow of Our Project
 
 As you knew that this is a V2 project (as I mentioned in the above topic), what problem were we facing exactly? 
 
@@ -52,12 +87,6 @@ Even if I inspect the page HTML and see that it uses the company id to navigate 
 
 Let's get to the next process. I used JS to loop through the list of company id list and decode id and get to URL then scrap data from the company detail page, group it by company category and export data to JSON file that named by category id to the target folder. Then, use import JSON to Pandas dataframe to process further, filter, group, export to Excel. And that's it, the brief process of what we did, thanks for being interested and reading this long story. I hope you can make use of it.
 
-## Collaborators
-
-- Ratnarit Jumnong (Ote)
-- Bew (University Name) - More information to be added later
-
-Please feel free to contribute to this project by submitting issues, pull requests or contacting the collaborators.
 ---
 
 <p style="font-size: 0.8em;">This README was written with the assistance of <a href="https://copilot.github.com/">GitHub Copilot</a>, an AI programming assistant.</p>
