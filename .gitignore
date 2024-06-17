@@ -15,5 +15,6 @@ Assigned/
 .DS_Store
 .dist
 tempCodeRunnerFile.js
-thePlayGround*.*
+# thePlayGround.js
+# thePlayGround*.*
 .idea
