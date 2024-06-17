@@ -126,12 +126,17 @@ function resolveCatagory(catagoryId){
 }
 
 function ensureDirectoryExistence(filePath) {
-    const dirname = path.dirname(filePath);
-    if (fs.existsSync(dirname)) {
-        return true;
-    }
-    ensureDirectoryExistence(dirname);
-    fs.mkdirSync(dirname);
+    filePath = path.normalize(filePath).split(path.sep);
+    filePath.forEach((subPath, index) => {
+        const currentPath = filePath.slice(0, index + 1).join(path.sep);
+        if (!fs.existsSync(currentPath)) {
+            fs.mkdirSync(currentPath);
+            console.log(`Directory ${currentPath} created since it doesn't exist.`);
+        }
+        else {
+            console.log(`Directory ${currentPath} already exists.`);
+        }
+    });
 }
 
 function debug(...args) {
@@ -143,7 +148,7 @@ function debug(...args) {
         const logMessage = args.map(arg => (typeof arg === 'object' ? JSON.stringify(arg) : arg)).join(' ');
 
         // Ensure the log directory exists
-        ensureDirectoryExistence('./logs/log.txt');
+        ensureDirectoryExistence('./logs');
 
         // Append the log message with the current time to a text file
         fs.appendFileSync('./logs/log.txt', `[${currentTime}] ${logMessage}\n`);
