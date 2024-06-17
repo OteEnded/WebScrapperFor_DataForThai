@@ -138,6 +138,8 @@ const targetDir = "./Target/";
                     utilites.debug('Specific Table Data:');
                     utilites.debug('.. data collapsed (to see expanded data, remove comment at about line 139 at main function) ..'); // specificTableData);
                     var loHolder = "";
+                    let founderHolder = [];
+                    let isFounder = false;
                     for (let i = 0; i < specificTableData.length; i++) {
                         // console.log("HERE " + i);
                         let holder = [];
@@ -151,22 +153,58 @@ const targetDir = "./Target/";
                             }
                             holder.push(value);
                         }
+                        // console.log("HOLDER:", holder)
                         if (holder.length == 2 && holder[0] != "") {
                             // ignore 'ประกอบธุรกิจ': 'ประกอบกิจการเพาะปลูกพืชการเกษตร\n' +  'หมวดธุรกิจ : การปลูกพืชผักอื่นๆ ซึ่งมิได้จัดประเภทไว้ในที่อื่น',
                             if (holder[1].includes('หมวดธุรกิจ')) {
+                                // container["ประกอบธุรกิจ"] = holder[1].split('\n')[0];
+                                container["หมวดธุรกิจ"] = holder[1].split('\n')[1].replace('หมวดธุรกิจ : ', '');
                                 continue;
                             }
                             container[holder[0]] = holder[1].split('\n')[0];
                         }
+                        if (holder.length == 1 && holder[0] != "" && !isFounder && founderHolder.length <= 0) {
+                            if (holder[0].includes('กรรมการ')) {
+                                isFounder = true;
+                                container["ก่อตั้งโดย"] = "กรรมการ";
+                                continue;
+                            }
+                            if (holder[0].includes('หุ้นส่วน')) {
+                                isFounder = true;
+                                container["ก่อตั้งโดย"] = "หุ้นส่วน";
+                                continue;
+                            }
+                        }
+                        if (isFounder){
+                            if (/^[0-9]/.test(holder[1])){
+                                founderHolder.push(holder[1].split('. ')[1]);
+                            }
+                            else {
+                                isFounder = false;
+                            }
+                        }
                     }
-                    console.log(Object.keys(specificTableData[0])[0]);
+                    console.log("FOUNDERHOLDER:", founderHolder);
+                    // console.log(Object.keys(specificTableData[0])[0]);
                     var akey = Object.keys(specificTableData[0])[0];
                     container['ที่ตั้ง'] = akey.split('ดูแผนที่')[1].trim().split('ค้นหาเบอร์โทร')[0].trim().split('\n')[0].split('\t')[0];
                     // console.log(container);
+                    if (container["ก่อตั้งโดย"]){
+                        container["ก่อตั้งโดย"] = container["ก่อตั้งโดย"] + ": " + founderHolder.join(', ');
+                    }
                 }
                 else {
                     console.error(utilites.debug("No table found with the specified text."));
                     continue;
+                }
+
+                console.log(container)
+                console.log(container["หมวดธุรกิจ"])
+                console.log(!container["หมวดธุรกิจ"])
+                
+                if (!container["หมวดธุรกิจ"]){
+                    container["หมวดธุรกิจ"] = container["ประกอบธุรกิจ"];
+                    container["ประกอบธุรกิจ"] = "";
                 }
 
                 const h2Values = await scrapeH2(page);
@@ -174,6 +212,7 @@ const targetDir = "./Target/";
                 container['ชื่อบริษัทภาษาอังกฤษ'] = h2Values[0].text;
                 container['ชื่อบริษัทภาษาไทย'] = h2Values[1].text;
                 container['ข้อมูลสำหรับการติดต่อ'] = isContact;
+                container['ที่มา'] = url;
                 await closeConnection(browser);
 
                 utilites.debug("Writing data to file...");

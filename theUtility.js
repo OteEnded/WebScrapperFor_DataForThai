@@ -34,11 +34,14 @@ function getCompanyUrl(companyId) {
 }
 
 // Function to write JSON file
-function writeJsonFile(path, data) {
-    fs.readFile(path, 'utf8', (err, fileData) => {
+function writeJsonFile(filePath, data) {
+
+    ensureDirectoryExistence(filePath.split('/').slice(0, -1).join('/'));
+
+    fs.readFile(filePath, 'utf8', (err, fileData) => {
         if (err && err.code === 'ENOENT') {
             // If file doesn't exist, create it with the new data as an array
-            fs.writeFile(path, JSON.stringify([data], null, 4), (err) => {
+            fs.writeFile(filePath, JSON.stringify([data], null, 4), (err) => {
                 if (err) throw err;
                 debug('File created and data written successfully.');
             });
@@ -62,7 +65,7 @@ function writeJsonFile(path, data) {
             jsonData.push(data);
 
             // Write the updated data back to the file
-            fs.writeFile(path, JSON.stringify(jsonData, null, 4), (err) => {
+            fs.writeFile(filePath, JSON.stringify(jsonData, null, 4), (err) => {
                 if (err) throw err;
                 debug('Data appended successfully.');
             });
