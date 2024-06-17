@@ -95,85 +95,126 @@ function checkIfDone(companyId, filePath) {
 
 const targetDir = "./Target/";
 
-utilites.ensureDirectoryExistence("./Test/one/two/three/four/five/six/seven/eight/nine/ten/");
+// utilites.ensureDirectoryExistence("./Test/one/two/three/four/five/six/seven/eight/nine/ten/");
 
-// // Main function
-// (async () => {
-//     try {
+// Main function
+(async () => {
+    try {
 
-//         let companyIds = ["0125543012397", "0105560187911"];
+        let companyIds = ["0125543012397", "0105560187911"];
             
-//         for (let companyId of companyIds) {
-//             // Check if empty string
-//             if (companyId === '')  continue;
-//             // utilites.debug("Working on company id:", companyId, "(catagory id:", workingCatagoryId, ")", "[", companyIds.indexOf(companyId) + 1, "/", companyIds.length - 1, "]");
-//             // Check if done
-//             // if (checkIfDone(companyId, targetDir + workingCatagoryId + '.json')) {
-//             //     utilites.debug("Company id " + companyId + " is already done.");
-//             //     continue;
-//             // }
-//             utilites.debug("Starting to scrape data for company:", companyId);
+        for (let companyId of companyIds) {
+            // Check if empty string
+            if (companyId === '')  continue;
+            // utilites.debug("Working on company id:", companyId, "(catagory id:", workingCatagoryId, ")", "[", companyIds.indexOf(companyId) + 1, "/", companyIds.length - 1, "]");
+            // Check if done
+            // if (checkIfDone(companyId, targetDir + workingCatagoryId + '.json')) {
+            //     utilites.debug("Company id " + companyId + " is already done.");
+            //     continue;
+            // }
+            utilites.debug("Starting to scrape data for company:", companyId);
 
-//             const url = utilites.getCompanyUrl(companyId);
-//             utilites.debug("Connecting to:", url);
-//             const { browser, page } = await connectToWeb(url);
+            const url = utilites.getCompanyUrl(companyId);
+            utilites.debug("Connecting to:", url);
+            const { browser, page } = await connectToWeb(url);
 
-//             // Scrape specific table
-//             const specificTableData = await scrapeSpecificTable(page);
-//             let container = {};
-//             let isContact = false;
-//             if (specificTableData) {
-//                 utilites.debug('Specific Table Data:');
-//                 utilites.debug('.. data collapsed (to see expanded data, remove comment at about line 139 at main function) ..'); // specificTableData);
-//                 var loHolder = "";
-//                 for (let i = 0; i < specificTableData.length; i++) {
-//                     // console.log("HERE " + i);
-//                     let holder = [];
-//                     for (const [key, value] of Object.entries(specificTableData[i])) {
-//                         // console.log(`KEY:${key}\nVALUE:${value}`);
-//                         if (key.includes('ที่ตั้ง')) {
-//                             loHolder = key;
-//                         }
-//                         if (value.includes('ข้อมูลสำหรับการติดต่อ')) {
-//                             isContact = true;
-//                         }
-//                         holder.push(value);
-//                     }
-//                     if (holder.length == 2 && holder[0] != "") {
-//                         // ignore 'ประกอบธุรกิจ': 'ประกอบกิจการเพาะปลูกพืชการเกษตร\n' +  'หมวดธุรกิจ : การปลูกพืชผักอื่นๆ ซึ่งมิได้จัดประเภทไว้ในที่อื่น',
-//                         if (holder[1].includes('หมวดธุรกิจ')) {
-//                             continue;
-//                         }
-//                         container[holder[0]] = holder[1].split('\n')[0];
-//                     }
-//                 }
-//                 console.log(Object.keys(specificTableData[0])[0]);
-//                 var akey = Object.keys(specificTableData[0])[0];
-//                 container['ที่ตั้ง'] = akey.split('ดูแผนที่')[1].trim().split('ค้นหาเบอร์โทร')[0].trim().split('\n')[0].split('\t')[0];
-//                 // console.log(container);
-//             }
-//             else {
-//                 console.error(utilites.debug("No table found with the specified text."));
-//                 continue;
-//             }
+            // Scrape specific table
+            const specificTableData = await scrapeSpecificTable(page);
+            let container = {};
+            let isContact = false;
+            if (specificTableData) {
+                utilites.debug('Specific Table Data:');
+                utilites.debug(specificTableData);
+                let loHolder = "";
+                let founderHolder = [];
+                let isFounder = false;
+                for (let i = 0; i < specificTableData.length; i++) {
+                    // console.log("HERE " + i);
+                    let holder = [];
+                    for (const [key, value] of Object.entries(specificTableData[i])) {
+                        // console.log(`KEY:${key}\nVALUE:${value}`);
+                        if (key.includes('ที่ตั้ง')) {
+                            loHolder = key;
+                        }
+                        if (value.includes('ข้อมูลสำหรับการติดต่อ')) {
+                            isContact = true;
+                        }
+                        holder.push(value);
+                    }
+                    console.log("HOLDER:", holder)
+                    if (holder.length == 2 && holder[0] != "") {
+                        // ignore 'ประกอบธุรกิจ': 'ประกอบกิจการเพาะปลูกพืชการเกษตร\n' +  'หมวดธุรกิจ : การปลูกพืชผักอื่นๆ ซึ่งมิได้จัดประเภทไว้ในที่อื่น',
+                        if (holder[1].includes('หมวดธุรกิจ')) {
+                            console.log(holder[1]);
+                            container["ประกอบธุรกิจ"] = holder[1].split('\n')[0];
+                            container["หมวดธุรกิจ"] = holder[1].split('\n')[1].replace('หมวดธุรกิจ : ', '');
+                            continue;
+                        }
+                        // console.log("HOLDER:", holder)
+                        container[holder[0]] = holder[1].split('\n')[0];
+                    }
+                    if (holder.length == 1 && holder[0] != "" && !isFounder && founderHolder.length <= 0) {
+                        if (holder[0].includes('กรรมการ')) {
+                            isFounder = true;
+                            container["ก่อตั้งโดย"] = "กรรมการ";
+                            continue;
+                        }
+                        if (holder[0].includes('หุ้นส่วน')) {
+                            isFounder = true;
+                            container["ก่อตั้งโดย"] = "หุ้นส่วน";
+                            continue;
+                        }
+                    }
+                    if (isFounder){
+                        if (/^[0-9]/.test(holder[1])){
+                            founderHolder.push(holder[1].split('. ')[1]);
+                        }
+                        else {
+                            isFounder = false;
+                        }
+                    }
+                }
+                console.log("FOUNDERHOLDER:", founderHolder);
+                console.log(Object.keys(specificTableData[0])[0]);
+                var akey = Object.keys(specificTableData[0])[0];
+                container['ที่ตั้ง'] = akey.split('ดูแผนที่')[1].trim().split('ค้นหาเบอร์โทร')[0].trim().split('\n')[0].split('\t')[0];
+                // console.log(container);
+                if (container["ก่อตั้งโดย"]){
+                    container["ก่อตั้งโดย"] = container["ก่อตั้งโดย"] + ": " + founderHolder.join(', ');
+                }
+            }
+            else {
+                console.error(utilites.debug("No table found with the specified text."));
+                continue;
+            }
 
-//             const h2Values = await scrapeH2(page);
-//             console.log(h2Values);
-//             container['ชื่อบริษัทภาษาอังกฤษ'] = h2Values[0].text;
-//             container['ชื่อบริษัทภาษาไทย'] = h2Values[1].text;
-//             container['ข้อมูลสำหรับการติดต่อ'] = isContact;
-//             await closeConnection(browser);
+            console.log(container)
+            console.log(container["หมวดธุรกิจ"])
+            console.log(!container["หมวดธุรกิจ"])
+            
+            if (!container["หมวดธุรกิจ"]){
+                container["หมวดธุรกิจ"] = container["ประกอบธุรกิจ"];
+                container["ประกอบธุรกิจ"] = "";
+            }
 
-//             utilites.debug(container);
-//             // utilites.writeJsonFile(targetDir + workingCatagoryId + '.json', container);
-//         }
+            const h2Values = await scrapeH2(page);
+            console.log(h2Values);
+            container['ชื่อบริษัทภาษาอังกฤษ'] = h2Values[0].text;
+            container['ชื่อบริษัทภาษาไทย'] = h2Values[1].text;
+            container['ข้อมูลสำหรับการติดต่อ'] = isContact;
+            container['ที่มา'] = url;
+            await closeConnection(browser);
+
+            utilites.debug(container);
+            // utilites.writeJsonFile(targetDir + workingCatagoryId + '.json', container);
+        }
         
-//         utilites.debug("Done");
-//         utilites.notifyCompletion(
-//             "Task Completed",
-//             "Done scraping data for all companies that defined in assigned folder"
-//         );
-//     } catch (error) {
-//         utilites.debug('Error in main function:', error);
-//     }
-// })();
+        utilites.debug("Done");
+        utilites.notifyCompletion(
+            "Task Completed",
+            "Done scraping data for all companies that defined in assigned folder"
+        );
+    } catch (error) {
+        utilites.debug('Error in main function:', error);
+    }
+})();
