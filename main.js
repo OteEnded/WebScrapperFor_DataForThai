@@ -5,6 +5,8 @@ const path = require('path');
 
 const utilites = require('./theUtility.js');
 
+const delayTime = utilites.getEnv().delay;
+
 // Function to connect to web and return page
 async function connectToWeb(url) {
     const browser = await puppeteer.launch();
@@ -201,6 +203,7 @@ const targetDir = "./Target/";
                         "Error Occured",
                         "No table found with the specified text.\nThe token might be exceeded the limit, try to change the token."
                     );
+                    utilites.sleep(5);
                     process.exit(1);
                 }
 
@@ -224,6 +227,10 @@ const targetDir = "./Target/";
                 utilites.debug("Writing data to file...");
                 utilites.debug(container);
                 utilites.writeJsonFile(targetDir + workingCatagoryId + '.json', container);
+
+
+                utilites.debug("Sleeping for", delayTime, "seconds...");
+                await utilites.sleep(delayTime);
             }
         }
         utilites.debug("Done");
