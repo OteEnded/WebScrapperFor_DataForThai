@@ -168,7 +168,8 @@ const targetDir = "./Target/";
                         if (holder.length == 2 && holder[0] != "") {
                             // ignore 'ประกอบธุรกิจ': 'ประกอบกิจการเพาะปลูกพืชการเกษตร\n' +  'หมวดธุรกิจ : การปลูกพืชผักอื่นๆ ซึ่งมิได้จัดประเภทไว้ในที่อื่น',
                             if (holder[1].includes('หมวดธุรกิจ')) {
-                                // container["ประกอบธุรกิจ"] = holder[1].split('\n')[0];
+                                // console.log(holder[1]);
+                                container["ประกอบธุรกิจ"] = holder[1].split('\n')[0];
                                 container["หมวดธุรกิจ"] = holder[1].split('\n')[1].replace('หมวดธุรกิจ : ', '');
                                 continue;
                             }
