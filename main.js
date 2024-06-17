@@ -5,7 +5,7 @@ const path = require('path');
 
 const utilites = require('./theUtility.js');
 
-const delayTime = utilites.getEnv().delay;
+var delayTime = 0;
 
 // Function to connect to web and return page
 async function connectToWeb(url) {
@@ -127,6 +127,15 @@ const targetDir = "./Target/";
                     continue;
                 }
                 utilites.debug("Starting to scrape data for company:", companyId);
+                
+                if (utilites.getEnv().delay.length == 1) {
+                    delayTime = utilites.getEnv().delay[0];
+                }
+                else {
+                    delayTime = utilites.getRandomIntInRange(utilites.getEnv().delay[0], utilites.getEnv().delay[1]);
+                }
+                console.log("Delay time:", delayTime);
+
 
                 const url = utilites.getCompanyUrl(companyId);
                 utilites.debug("Connecting to:", url);
