@@ -189,6 +189,18 @@ function sleep(seconds) {
     return new Promise(resolve => setTimeout(resolve, seconds * 1000));
 }
 
+function getRandomIntInRange(min = null, max = null){
+    if (min == null) return Math.random();
+    if (max == null){
+        max = min
+        min = 0
+    }
+    if(min > max){
+        [min, max] = [max, min]
+    }
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 module.exports = {
     readCSVToObj,
     decodeCompanyID,
@@ -202,5 +214,6 @@ module.exports = {
     ensureDirectoryExistence,
     debug,
     notifyCompletion: notifyTaskCompletion,
-    sleep
+    sleep,
+    getRandomIntInRange
 };
