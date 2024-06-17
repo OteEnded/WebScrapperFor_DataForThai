@@ -121,7 +121,7 @@ const targetDir = "./Target/";
                 utilites.debug("Working on company id:", companyId, "(catagory id:", workingCatagoryId, ")", "[", companyIds.indexOf(companyId) + 1, "/", companyIds.length - 1, "]");
                 // Check if done
                 if (checkIfDone(companyId, targetDir + workingCatagoryId + '.json')) {
-                    utilites.debug("Company id " + companyId + " is already done.");
+                    utilites.debug("Company id:", companyId, "is already done!!!");
                     continue;
                 }
                 utilites.debug("Starting to scrape data for company:", companyId);
@@ -195,7 +195,13 @@ const targetDir = "./Target/";
                 }
                 else {
                     console.error(utilites.debug("No table found with the specified text."));
-                    continue;
+                    utilites.debug("The token might be exceeded the limit, try to change the token.");
+                    await closeConnection(browser);
+                    utilites.notifyCompletion(
+                        "Error Occured",
+                        "No table found with the specified text.\nThe token might be exceeded the limit, try to change the token."
+                    );
+                    process.exit(1);
                 }
 
                 console.log(container)
