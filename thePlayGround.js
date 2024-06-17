@@ -1,7 +1,6 @@
 // Import dependencies
 const puppeteer = require('puppeteer');
 const fs = require('fs');
-const csv = require('csv-parser');
 const path = require('path');
 
 const utilites = require('./theUtility.js');
@@ -123,10 +122,10 @@ const targetDir = "./Target/";
             let isContact = false;
             if (specificTableData) {
                 utilites.debug('Specific Table Data:');
-                utilites.debug(specificTableData);
+                utilites.debug('.. data collapsed (to see expanded data, remove comment at about line 139 at main function) ..'); // specificTableData);
                 var loHolder = "";
                 for (let i = 0; i < specificTableData.length; i++) {
-                    console.log("HERE " + i);
+                    // console.log("HERE " + i);
                     let holder = [];
                     for (const [key, value] of Object.entries(specificTableData[i])) {
                         // console.log(`KEY:${key}\nVALUE:${value}`);
@@ -149,7 +148,7 @@ const targetDir = "./Target/";
                 console.log(Object.keys(specificTableData[0])[0]);
                 var akey = Object.keys(specificTableData[0])[0];
                 container['ที่ตั้ง'] = akey.split('ดูแผนที่')[1].trim().split('ค้นหาเบอร์โทร')[0].trim().split('\n')[0].split('\t')[0];
-                console.log(container);
+                // console.log(container);
             }
             else {
                 console.error(utilites.debug("No table found with the specified text."));
@@ -163,7 +162,7 @@ const targetDir = "./Target/";
             container['ข้อมูลสำหรับการติดต่อ'] = isContact;
             await closeConnection(browser);
 
-            console.log(container);
+            utilites.debug(container);
             // utilites.writeJsonFile(targetDir + workingCatagoryId + '.json', container);
         }
         

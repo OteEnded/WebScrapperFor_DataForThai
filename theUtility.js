@@ -1,4 +1,3 @@
-const csv = require('csv-parser');
 const path = require('path');
 const fs = require('fs');
 const notifier = require('node-notifier');
