@@ -184,6 +184,11 @@ function notifyTaskCompletion(title = 'Task Complete', message = 'Your program h
     debug('theUtility[notifyTaskCompletion]: Set off a notification');
 }
 
+// Sleep function that returns a Promise which resolves after a specified duration
+function sleep(seconds) {
+    return new Promise(resolve => setTimeout(resolve, seconds * 1000));
+}
+
 module.exports = {
     readCSVToObj,
     decodeCompanyID,
@@ -196,5 +201,6 @@ module.exports = {
     resolveCatagory,
     ensureDirectoryExistence,
     debug,
-    notifyCompletion: notifyTaskCompletion
+    notifyCompletion: notifyTaskCompletion,
+    sleep
 };
