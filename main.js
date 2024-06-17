@@ -71,6 +71,7 @@ function indexDirectories(dir) {
 
     utilites.debug("[indexDirectories] dir to index:", dir);
 
+    utilites.ensureDirectoryExistence(dir);
     const files = fs.readdirSync(dir, { withFileTypes: true })
         .filter(dirent => dirent.isFile() && path.extname(dirent.name) === '.csv')
         .map(dirent => path.basename(dirent.name));
