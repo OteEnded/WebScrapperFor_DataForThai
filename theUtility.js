@@ -142,6 +142,8 @@ function ensureDirectoryExistence(filePath) {
     });
 }
 
+var isDirLog = false;
+
 function debug(...args) {
     try {
         // Get the current time
@@ -151,7 +153,10 @@ function debug(...args) {
         const logMessage = args.map(arg => (typeof arg === 'object' ? JSON.stringify(arg) : arg)).join(' ');
 
         // Ensure the log directory exists
-        ensureDirectoryExistence('./logs');
+        if (!isDirLog) {
+            ensureDirectoryExistence('./logs');
+            isDirLog = true;
+        }
 
         // Append the log message with the current time to a text file
         fs.appendFileSync('./logs/log.txt', `[${currentTime}] ${logMessage}\n`);
