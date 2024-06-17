@@ -1,3 +1,1 @@
-const utilites = require('./theUtility.js');
-
-utilites.notifyCompletion();
+// an area to test code

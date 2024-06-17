@@ -5,7 +5,6 @@ const csv = require('csv-parser');
 const path = require('path');
 
 const utilites = require('./theUtility.js');
-const { title } = require('process');
 
 // Function to connect to web and return page
 async function connectToWeb(url) {
@@ -134,6 +133,7 @@ const targetDir = "./Target/";
                 // Scrape specific table
                 const specificTableData = await scrapeSpecificTable(page);
                 let container = {};
+                let isContact = false;
                 if (specificTableData) {
                     utilites.debug('Specific Table Data:');
                     utilites.debug(specificTableData);
@@ -142,9 +142,12 @@ const targetDir = "./Target/";
                         console.log("HERE " + i);
                         let holder = [];
                         for (const [key, value] of Object.entries(specificTableData[i])) {
-                            console.log(`KEY:${key}\nVALUE:${value}`);
+                            // console.log(`KEY:${key}\nVALUE:${value}`);
                             if (key.includes('ที่ตั้ง')) {
                                 loHolder = key;
+                            }
+                            if (value.includes('ข้อมูลสำหรับการติดต่อ')) {
+                                isContact = true;
                             }
                             holder.push(value);
                         }
@@ -170,9 +173,12 @@ const targetDir = "./Target/";
                 console.log(h2Values);
                 container['ชื่อบริษัทภาษาอังกฤษ'] = h2Values[0].text;
                 container['ชื่อบริษัทภาษาไทย'] = h2Values[1].text;
-                utilites.writeJsonFile(targetDir + workingCatagoryId + '.json', container);
-
+                container['ข้อมูลสำหรับการติดต่อ'] = isContact;
                 await closeConnection(browser);
+
+                utilites.debug("Writing data to file...");
+                utilites.debug(container);
+                utilites.writeJsonFile(targetDir + workingCatagoryId + '.json', container);
             }
         }
         utilites.debug("Done");
