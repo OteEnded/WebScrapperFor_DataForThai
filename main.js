@@ -101,6 +101,9 @@ const targetDir = "./Target/";
 // Main function
 (async () => {
     try {
+
+        let howManyThatWeGot = 0;
+
         for (let workingCatagoryFile of indexDirectories(workingList)){
             let workingCatagoryId = workingCatagoryFile.split('.')[0];
             utilites.debug("Working on catagory id:", workingCatagoryId);
@@ -196,7 +199,8 @@ const targetDir = "./Target/";
                             }
                         }
                     }
-                    console.log("FOUNDERHOLDER:", founderHolder);
+                    // console.log("FOUNDERHOLDER:", founderHolder);
+
                     // console.log(Object.keys(specificTableData[0])[0]);
                     var akey = Object.keys(specificTableData[0])[0];
                     container['ที่ตั้ง'] = akey.split('ดูแผนที่')[1].trim().split('ค้นหาเบอร์โทร')[0].trim().split('\n')[0].split('\t')[0];
@@ -213,13 +217,14 @@ const targetDir = "./Target/";
                         "Error Occured",
                         "No table found with the specified text.\nThe token might be exceeded the limit, try to change the token."
                     );
+                    utilites.debug("Total companies that we got:", howManyThatWeGot);
                     utilites.sleep(5);
                     process.exit(1);
                 }
 
-                console.log(container)
-                console.log(container["หมวดธุรกิจ"])
-                console.log(!container["หมวดธุรกิจ"])
+                // console.log(container)
+                // console.log(container["หมวดธุรกิจ"])
+                // console.log(!container["หมวดธุรกิจ"])
                 
                 if (!container["หมวดธุรกิจ"]){
                     container["หมวดธุรกิจ"] = container["ประกอบธุรกิจ"];
@@ -238,6 +243,7 @@ const targetDir = "./Target/";
                 utilites.debug(container);
                 utilites.writeJsonFile(targetDir + workingCatagoryId + '.json', container);
 
+                howManyThatWeGot++;
 
                 utilites.debug("Sleeping for", delayTime, "seconds...");
                 await utilites.sleep(delayTime);
@@ -248,6 +254,7 @@ const targetDir = "./Target/";
             "Task Completed",
             "Done scraping data for all companies that defined in assigned folder"
         );
+        utilites.debug("Total companies that we got:", howManyThatWeGot);
     } catch (error) {
         utilites.debug('Error in main function:', error);
     }
