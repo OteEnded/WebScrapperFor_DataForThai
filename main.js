@@ -218,6 +218,7 @@ const targetDir = "./Target/";
                         "No table found with the specified text.\nThe token might be exceeded the limit, try to change the token."
                     );
                     utilites.debug("Total companies that we got:", howManyThatWeGot);
+                    utilites.debug("which the last try is at", companyIds.indexOf(companyId), "companies of", companyIds.length - 1, "companies from catalog id:", workingCatagoryId, "(", catagory['ประเภทธุรกิจ'], ")");
                     utilites.sleep(5);
                     process.exit(1);
                 }
