@@ -243,8 +243,9 @@ const targetDir = "./Target/";
                 utilites.debug("Writing data to file...");
                 utilites.debug(container);
                 utilites.writeJsonFile(targetDir + workingCatagoryId + '.json', container);
-
+                
                 howManyThatWeGot++;
+                utilites.debug("This is the", howManyThatWeGot, "company from this round of scraping data.");
 
                 utilites.debug("Sleeping for", delayTime, "seconds...");
                 await utilites.sleep(delayTime);
