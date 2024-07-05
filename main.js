@@ -137,8 +137,6 @@ const targetDir = "./Target/";
                 else {
                     delayTime = utilites.getRandomIntInRange(utilites.getEnv().delay[0], utilites.getEnv().delay[1]);
                 }
-                console.log("Delay time:", delayTime);
-
 
                 const url = utilites.getCompanyUrl(companyId);
                 utilites.debug("Connecting to:", url);
@@ -162,7 +160,7 @@ const targetDir = "./Target/";
                             if (key.includes('ที่ตั้ง')) {
                                 loHolder = key;
                             }
-                            if (value.includes('ข้อมูลสำหรับการติดต่อ')) {
+                            if (value.includes('ข้อมูลสำหรับการติดต่อ') || value.includes('ข้อมูลสำหรับติดต่อ')) {
                                 isContact = true;
                             }
                             holder.push(value);
