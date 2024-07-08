@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node main.js"
+    "start": "node main.js",
+    "py": "python ./Python/run.py"
   },
   "keywords": [],
-  "author": "",
+  "author": "OteEnded",
   "license": "ISC",
   "dependencies": {
     "csv-parser": "^3.0.0",

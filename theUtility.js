@@ -154,12 +154,12 @@ function debug(...args) {
 
         // Ensure the log directory exists
         if (!isDirLog) {
-            ensureDirectoryExistence('./logs');
+            ensureDirectoryExistence('./Logs');
             isDirLog = true;
         }
 
         // Append the log message with the current time to a text file
-        fs.appendFileSync('./logs/log.txt', `[${currentTime}] ${logMessage}\n`);
+        fs.appendFileSync('./Logs/log.txt', `[${currentTime}] ${logMessage}\n`);
 
         // Log the message with the current time to the console
         console.log(`[${currentTime}]`, ...args);
@@ -201,6 +201,36 @@ function getRandomIntInRange(min = null, max = null){
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function listDirTree(dirPath, basePath = dirPath) {
+
+    let listdir = [];
+
+    try {
+        const files = fs.readdirSync(dirPath);
+
+        files.forEach(file => {
+            const filePath = path.join(dirPath, file);
+            const relativePath = path.relative(basePath, filePath);
+            const stats = fs.statSync(filePath);
+
+            // tree += `${relativePath}\n`;
+            listdir.push(`${relativePath}`);
+
+            if (stats.isDirectory()) {
+            // tree += listDirTree(filePath, basePath);
+                listdir.push(...listDirTree(filePath, basePath));
+            }
+        });
+    }
+    catch (err) {
+        console.error('theUtility[listDirTree]: ERROR, cannot list directory tree for', dirPath);
+        console.error(err);
+        return null;
+    }
+
+    return listdir;
+}
+
 module.exports = {
     readCSVToObj,
     decodeCompanyID,
@@ -215,5 +245,6 @@ module.exports = {
     debug,
     notifyCompletion: notifyTaskCompletion,
     sleep,
-    getRandomIntInRange
+    getRandomIntInRange,
+    listDirTree
 };

@@ -30,7 +30,7 @@ async function scrapeSpecificTable(page) {
         // Search for the specific text within tables
         const specificTable = tables.find(table =>
             Array.from(table.querySelectorAll('td, th')).some(cell =>
-                cell.innerText.includes('ที่ตั้ง\n ดูแผนที่')
+                cell.innerText.includes('ที่ตั้ง')
             )
         );
 
@@ -171,7 +171,9 @@ const targetDir = "./Target/";
                             if (holder[1].includes('หมวดธุรกิจ')) {
                                 // console.log(holder[1]);
                                 container["ประกอบธุรกิจ"] = holder[1].split('\n')[0];
-                                container["หมวดธุรกิจ"] = holder[1].split('\n')[1].replace('หมวดธุรกิจ : ', '');
+                                if (holder[1].split('\n')[1] != undefined) {
+                                    container["หมวดธุรกิจ"] = holder[1].split('\n')[1].replace('หมวดธุรกิจ : ', '');
+                                }
                                 continue;
                             }
                             container[holder[0]] = holder[1].split('\n')[0];
@@ -201,10 +203,10 @@ const targetDir = "./Target/";
 
                     // console.log(Object.keys(specificTableData[0])[0]);
                     var akey = Object.keys(specificTableData[0])[0];
-                    container['ที่ตั้ง'] = akey.split('ดูแผนที่')[1].trim().split('ค้นหาเบอร์โทร')[0].trim().split('\n')[0].split('\t')[0];
+                    container['ที่ตั้ง'] = akey.split('แผนที่')[1].trim().split('ค้นหาเบอร์โทร')[0].trim().split('\n')[0].split('\t')[0];
                     // console.log(container);
                     if (container["ก่อตั้งโดย"]){
-                        container["ก่อตั้งโดย"] = container["ก่อตั้งโดย"] + ": " + founderHolder.join(', ');
+                        container["ก่อตั้งโดย"] = (container["ก่อตั้งโดย"] + ": " + founderHolder.join(', ')).replace("\n", " ");
                     }
                 }
                 else {
