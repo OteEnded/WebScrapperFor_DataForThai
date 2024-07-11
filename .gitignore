@@ -50,3 +50,7 @@ Python/Python*
 
 # ignore undone python files (temporary)
 Python
+
+# ignore Temporary files
+Temp
+__pycache__

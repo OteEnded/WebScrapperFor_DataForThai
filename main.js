@@ -142,13 +142,22 @@ const targetDir = "./Target/";
                 utilites.debug("Connecting to:", url);
                 const { browser, page } = await connectToWeb(url);
 
+                // // save page's html to file
+                // // Get the HTML content of the page
+                // const htmlContent = await page.content();
+
+                // // Save HTML content to a file
+                // const filename = 'page.html';
+                // fs.writeFileSync(filename, htmlContent, 'utf8');
+                // console.log(`Page saved as ${filename}`);
+
                 // Scrape specific table
                 const specificTableData = await scrapeSpecificTable(page);
                 let container = {};
                 let isContact = false;
                 if (specificTableData) {
                     utilites.debug('Specific Table Data:');
-                    utilites.debug('.. data collapsed (to see expanded data, remove comment at about line 139 at main function) ..'); // specificTableData);
+                    utilites.debug('.. data collapsed (to see expanded data, remove comment at about line 151 from main function) ..'); // specificTableData);
                     var loHolder = "";
                     let founderHolder = [];
                     let isFounder = false;
@@ -206,7 +215,7 @@ const targetDir = "./Target/";
                     container['ที่ตั้ง'] = akey.split('แผนที่')[1].trim().split('ค้นหาเบอร์โทร')[0].trim().split('\n')[0].split('\t')[0];
                     // console.log(container);
                     if (container["ก่อตั้งโดย"]){
-                        container["ก่อตั้งโดย"] = (container["ก่อตั้งโดย"] + ": " + founderHolder.join(', ')).replace("\n", " ");
+                        container["ก่อตั้งโดย"] = (container["ก่อตั้งโดย"] + ": " + founderHolder.join(', ')).replace(/\n/g, " ").replace(/ /g, "");
                     }
                 }
                 else {

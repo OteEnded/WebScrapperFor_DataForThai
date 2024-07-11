@@ -11,4 +11,5 @@ for (let i = 0; i < fileList.length; i++) {
         }
         console.log(temp[j]);
     }
+    utilites.writeJsonFile("./Temp/" + fileList[i], temp);
 }

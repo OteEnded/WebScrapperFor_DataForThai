@@ -27,12 +27,16 @@ async function scrapeSpecificTable(page) {
     const specificTableData = await page.evaluate(() => {
         const tables = Array.from(document.querySelectorAll('table'));
 
+        console.log(tables);
+
         // Search for the specific text within tables
         const specificTable = tables.find(table =>
             Array.from(table.querySelectorAll('td, th')).some(cell =>
                 cell.innerText.includes('ที่ตั้ง')
             )
         );
+
+        console.log(specificTable);
 
         if (!specificTable) return null;
 
@@ -142,13 +146,24 @@ const targetDir = "./Target/";
                 utilites.debug("Connecting to:", url);
                 const { browser, page } = await connectToWeb(url);
 
+
+                // save page's html to file
+                // Get the HTML content of the page
+                const htmlContent = await page.content();
+
+                // Save HTML content to a file
+                const filename = 'page.html';
+                fs.writeFileSync(filename, htmlContent, 'utf8');
+                console.log(`Page saved as ${filename}`);
+
                 // Scrape specific table
                 const specificTableData = await scrapeSpecificTable(page);
+                console.log(specificTableData);
                 let container = {};
                 let isContact = false;
                 if (specificTableData) {
                     utilites.debug('Specific Table Data:');
-                    utilites.debug('.. data collapsed (to see expanded data, remove comment at about line 139 at main function) ..'); // specificTableData);
+                    utilites.debug('.. data collapsed (to see expanded data, remove comment at about line 151 from main function) ..'); // specificTableData);
                     var loHolder = "";
                     let founderHolder = [];
                     let isFounder = false;
@@ -203,11 +218,10 @@ const targetDir = "./Target/";
 
                     // console.log(Object.keys(specificTableData[0])[0]);
                     var akey = Object.keys(specificTableData[0])[0];
-                    console.log(akey);
                     container['ที่ตั้ง'] = akey.split('แผนที่')[1].trim().split('ค้นหาเบอร์โทร')[0].trim().split('\n')[0].split('\t')[0];
                     // console.log(container);
                     if (container["ก่อตั้งโดย"]){
-                        container["ก่อตั้งโดย"] = (container["ก่อตั้งโดย"] + ": " + founderHolder.join(', ')).replace("\n", " ");
+                        container["ก่อตั้งโดย"] = (container["ก่อตั้งโดย"] + ": " + founderHolder.join(', ')).replace(/\n/g, " ").replace(/ /g, "");
                     }
                 }
                 else {
@@ -241,14 +255,14 @@ const targetDir = "./Target/";
                 container['ที่มา'] = url;
                 await closeConnection(browser);
 
+                process.exit(0);
+
                 utilites.debug("Writing data to file...");
                 utilites.debug(container);
-                // utilites.writeJsonFile(targetDir + workingCatagoryId + '.json', container);
+                utilites.writeJsonFile(targetDir + workingCatagoryId + '.json', container);
                 
                 howManyThatWeGot++;
                 utilites.debug("This is the", howManyThatWeGot, "company from this round of scraping data.");
-
-                if(howManyThatWeGot>0) process.exit(0);
 
                 utilites.debug("Sleeping for", delayTime, "seconds...");
                 await utilites.sleep(delayTime);
