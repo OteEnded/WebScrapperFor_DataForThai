@@ -231,6 +231,23 @@ function listDirTree(dirPath, basePath = dirPath) {
     return listdir;
 }
 
+// Function to select value based on OS
+function selectValueFromOs(valueForWin, valueForLinux) {
+    return process.platform === 'win32' ? valueForWin : valueForLinux;
+}
+
+// Function to delete a whole directory
+function deleteDir(dirPath) {
+    try {
+        fs.rmdirSync(dirPath, { recursive: true });
+        console.log(`Directory ${dirPath} deleted successfully.`);
+    }
+    catch (err) {
+        console.error('theUtility[deleteDir]: ERROR, cannot delete directory', dirPath);
+        console.error(err);
+    }
+}
+
 module.exports = {
     readCSVToObj,
     decodeCompanyID,
@@ -246,5 +263,7 @@ module.exports = {
     notifyCompletion: notifyTaskCompletion,
     sleep,
     getRandomIntInRange,
-    listDirTree
+    listDirTree,
+    selectValueFromOs,
+    deleteDir
 };

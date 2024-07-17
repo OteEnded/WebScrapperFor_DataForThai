@@ -97,6 +97,7 @@ function checkIfDone(companyId, filePath) {
 }
 
 const targetDir = "./Target/";
+const isSavePage = false;
 
 // Main function
 (async () => {
@@ -142,14 +143,14 @@ const targetDir = "./Target/";
                 utilites.debug("Connecting to:", url);
                 const { browser, page } = await connectToWeb(url);
 
-                // // save page's html to file
-                // // Get the HTML content of the page
-                // const htmlContent = await page.content();
-
-                // // Save HTML content to a file
-                // const filename = 'page.html';
-                // fs.writeFileSync(filename, htmlContent, 'utf8');
-                // console.log(`Page saved as ${filename}`);
+                // save page's html to file
+                if (isSavePage) {
+                    // Get the HTML content of the page
+                    const htmlContent = await page.content();
+                    const filename = 'page.html';
+                    fs.writeFileSync(filename, htmlContent, 'utf8');
+                    console.log(`Page saved as ${filename}`);
+                }
 
                 // Scrape specific table
                 const specificTableData = await scrapeSpecificTable(page);

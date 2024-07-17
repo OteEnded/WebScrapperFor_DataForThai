@@ -54,3 +54,6 @@ Python
 # ignore Temporary files
 Temp
 __pycache__
+
+# page.html (web page that trying to scrape)
+page.html
