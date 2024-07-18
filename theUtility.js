@@ -33,8 +33,8 @@ function getCompanyUrl(companyId) {
     return "https://www.dataforthai.com/company/" + decodeCompanyID(companyId) + "/";
 }
 
-// Function to write JSON file
-function writeJsonFile(filePath, data) {
+// Function to append data to JSON file
+function appendJsonFile(filePath, data) {
 
     ensureDirectoryExistence(filePath.split('/').slice(0, -1).join('/'));
 
@@ -43,7 +43,7 @@ function writeJsonFile(filePath, data) {
             // If file doesn't exist, create it with the new data as an array
             fs.writeFile(filePath, JSON.stringify([data], null, 4), (err) => {
                 if (err) throw err;
-                debug('File created and data written successfully.');
+                debug('theUtility[appendJsonFile]: File created and data written successfully.');
             });
         } else if (err) {
             // Handle other errors
@@ -57,7 +57,7 @@ function writeJsonFile(filePath, data) {
                     jsonData = [jsonData];
                 }
             } catch (parseErr) {
-                console.error(debug('Error parsing JSON:', parseErr));
+                debugError('theUtility[appendJsonFile]: Error parsing JSON -> ', parseErr);
                 return;
             }
 
@@ -67,7 +67,7 @@ function writeJsonFile(filePath, data) {
             // Write the updated data back to the file
             fs.writeFile(filePath, JSON.stringify(jsonData, null, 4), (err) => {
                 if (err) throw err;
-                debug('Data appended successfully.');
+                debug('theUtility[appendJsonFile]: Data appended successfully.');
             });
         }
     });
@@ -82,8 +82,8 @@ function readJsonFile(filePath, isDebug = true){
         if (isDebug) debug("theUtility[readJSONFile]: Data from", filePath, "can be read successfully and will be return.")
         return data
     } catch (err) {
-        console.error('theUtility[readJSONFile]: ERROR, cannot read file from', filePath);
-        console.error(err);
+        debugError('theUtility[readJSONFile]: ERROR, cannot read file from', filePath);
+        debugError(err);
         return null
     }
 }
@@ -144,10 +144,15 @@ function ensureDirectoryExistence(filePath) {
 
 var isDirLog = false;
 
-function debug(...args) {
+function getFormattedTime() {
+    return new Date().toLocaleTimeString();
+
+}
+
+function debugLog(...args) {
     try {
         // Get the current time
-        const currentTime = new Date().toLocaleTimeString();
+        const currentTime = getFormattedTime();
 
         // Combine all log arguments into a single string
         const logMessage = args.map(arg => (typeof arg === 'object' ? JSON.stringify(arg) : arg)).join(' ');
@@ -162,16 +167,25 @@ function debug(...args) {
         fs.appendFileSync('./Logs/log.txt', `[${currentTime}] ${logMessage}\n`);
 
         // Log the message with the current time to the console
-        console.log(`[${currentTime}]`, ...args);
         return `[${currentTime}] ${logMessage}`;
     }
     catch (err) {
-        console.error('theUtility[debug]: ERROR, cannot log message to file');
-        console.error(err);
+        console.error('theUtility[debugLog]: ERROR, cannot log message to file. ->');
         console.log(...args);
+        console.error(err);
         return err;
     }
 };
+
+function debug(...args) {
+    console.log(`[${getFormattedTime()}]`, ...args);
+    return debugLog(...args);
+}
+
+function debugError(...args) {
+    console.error(`[${getFormattedTime()}]`, ...args);
+    return debugLog(...args);
+}
 
 // Function to notify completion with default OS sound
 function notifyTaskCompletion(title = 'Task Complete', message = 'Your program has finished running.') {
@@ -223,8 +237,8 @@ function listDirTree(dirPath, basePath = dirPath) {
         });
     }
     catch (err) {
-        console.error('theUtility[listDirTree]: ERROR, cannot list directory tree for', dirPath);
-        console.error(err);
+        debugError('theUtility[listDirTree]: ERROR, cannot list directory tree for', dirPath);
+        debugError(err);
         return null;
     }
 
@@ -239,12 +253,12 @@ function selectValueFromOs(valueForWin, valueForLinux) {
 // Function to delete a whole directory
 function deleteDir(dirPath) {
     try {
-        fs.rmdirSync(dirPath, { recursive: true });
-        console.log(`Directory ${dirPath} deleted successfully.`);
+        fs.rmSync(dirPath, { recursive: true });
+        debug(`theUtility[deleteDir]: Directory ${dirPath} deleted successfully.`);
     }
     catch (err) {
-        console.error('theUtility[deleteDir]: ERROR, cannot delete directory', dirPath);
-        console.error(err);
+        debugError('theUtility[deleteDir]: ERROR, cannot delete directory', dirPath);
+        debugError(err);
     }
 }
 
@@ -252,7 +266,7 @@ module.exports = {
     readCSVToObj,
     decodeCompanyID,
     getCompanyUrl,
-    writeJsonFile,
+    appendJsonFile,
     readJsonFile,
     getEnv,
     isFileExists,
@@ -265,5 +279,6 @@ module.exports = {
     getRandomIntInRange,
     listDirTree,
     selectValueFromOs,
-    deleteDir
+    deleteDir,
+    debugError
 };

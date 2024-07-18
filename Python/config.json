@@ -1,0 +1,24 @@
+{
+    "o": {
+        "lastProcess": {
+            "catagoryID": "46693",
+            "companyID": "0",
+            "index": "0"
+        },
+        "scope": [
+            46101,
+            100000
+        ]
+    },
+    "b": {
+        "lastProcess": {
+            "catagoryID": "07292",
+            "companyID": "0",
+            "index": 0
+        },
+        "scope": [
+            0,
+            46100
+        ]
+    }
+}

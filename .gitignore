@@ -48,8 +48,8 @@ tokenStorage.txt
 # file's name starts with Python in Python folder
 Python/Python*
 
-# ignore undone python files (temporary)
-Python
+# # ignore undone python files (temporary)
+# Python
 
 # ignore Temporary files
 Temp

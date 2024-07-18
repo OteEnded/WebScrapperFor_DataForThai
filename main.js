@@ -111,7 +111,7 @@ const isSavePage = false;
             // check if catagory id is exist
             let catagory = utilites.resolveCatagory(workingCatagoryId);
             if (!catagory) {
-                console.error(utilites.debug("Catagory is not found!!!"));
+                utilites.debugError("Catagory is not found!!!");
                 continue;
             }
             utilites.debug("Working on catagory:", catagory['ประเภทธุรกิจ'], "| estimated amount (from csv):", catagory['จำนวน']);
@@ -220,7 +220,7 @@ const isSavePage = false;
                     }
                 }
                 else {
-                    console.error(utilites.debug("No table found with the specified text."));
+                    utilites.debugError("No table found with the specified text.");
                     utilites.debug("The token might be exceeded the limit, try to change the token.");
                     await closeConnection(browser);
                     utilites.notifyCompletion(
@@ -252,7 +252,7 @@ const isSavePage = false;
 
                 utilites.debug("Writing data to file...");
                 utilites.debug(container);
-                utilites.writeJsonFile(targetDir + workingCatagoryId + '.json', container);
+                utilites.appendJsonFile(targetDir + workingCatagoryId + '.json', container);
                 
                 howManyThatWeGot++;
                 utilites.debug("This is the", howManyThatWeGot, "company from this round of scraping data.");
