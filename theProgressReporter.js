@@ -13,7 +13,6 @@ for (let i = 0; i < targetFiles.length; i++) {
     rawDataRows += utilities.readJsonFile(targetDir + targetFiles[i], false).length;
 }
 utilities.debug("> Total number of raw data rows: ", rawDataRows);
-utilities.debug("The number above is the estimated number of rows that should updated to p'Boy's Excel file.");
 
 const result_b = utilities.readCSVToObj("Result/result_b.csv");
 const result_o = utilities.readCSVToObj("Result/result_o.csv");
@@ -22,6 +21,7 @@ utilities.debug("> Total (converted data) rows in result_b: " + result_b.length)
 utilities.debug("> Total (converted data) rows in result_o: " + result_o.length);
 
 utilities.debug("> Total number of converted data rows: ", result_b.length + result_o.length);
+utilities.debug("The number above is the estimated number of rows that should updated to p'Boy's Excel file.");
 
 pyProgress = utilities.readJsonFile("Python/config.json", false);
 

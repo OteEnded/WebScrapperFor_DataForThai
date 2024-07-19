@@ -73,6 +73,15 @@ function appendJsonFile(filePath, data) {
     });
 }
 
+function writeJsonFile(filePath, data) {
+    ensureDirectoryExistence(filePath.split('/').slice(0, -1).join('/'));
+
+    fs.writeFile(filePath, JSON.stringify(data, null, 4), (err) => {
+        if (err) throw err;
+        debug('theUtility[writeJsonFile]: Data written successfully.');
+    });
+}
+
 // Function to read JSON file to Object
 function readJsonFile(filePath, isDebug = true){
     if (isDebug) debug("theUtility[readJSONFile]: Reading JSON file from", filePath)
@@ -267,6 +276,7 @@ module.exports = {
     decodeCompanyID,
     getCompanyUrl,
     appendJsonFile,
+    writeJsonFile,
     readJsonFile,
     getEnv,
     isFileExists,
