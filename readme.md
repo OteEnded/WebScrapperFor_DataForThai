@@ -34,6 +34,14 @@ Follow these steps to run this project:
 9. Wait until the process is done. The results will be in the `./Target` directory as JSON files.
 10. Import/convert the JSON files to your desired format. You can convert them to a DataFrame in pandas to process the data further.
 
+## npm scripts
+
+The project includes several npm scripts to help manage and run different parts of the project:
+
+- **`npm start`**: This is the classic start script. It calls the `main.js` script to start the web scraping process.
+- **`npm run report`** or **`npm run count`**: This script reads the target, the result, or anything that can calculate the progress and reports how much progress the project has made.
+- **`npm run py`**: This script starts the Python subproject part, which handles data filtering, cleaning, and filling in. The script manages the Python virtual environment cross-platform (not fully tested on Mac/Linux).
+- **`npm run pg`**: This script runs your own test script (`thePlayGround.js`) to test various things.
 
 ## Story of the Project
 
