@@ -5,7 +5,7 @@ This project is a web scraper program for a specific website called DataForThai 
 ## Collaborators
 
 - [OteEnded](https://github.com/OteEnded) [Project Lead, JavaScript Development]
-- [BJesaya](https://github.com/BJesaya) [Data Scientist, Data Analysis & Data Acquisition]
+- [BJesaya](https://github.com/BJesaya) or [jesaya-tr](https://github.com/jesaya-tr) [Data Scientist, Data Analysis & Data Acquisition]
 
 ## How to Use This Project
 
@@ -40,7 +40,7 @@ The project includes several npm scripts to help manage and run different parts 
 
 - **`npm start`**: This is the classic start script. It calls the `main.js` script to start the web scraping process.
 - **`npm run report`** or **`npm run count`**: This script reads the target, the result, or anything that can calculate the progress and reports how much progress the project has made.
-- **`npm run py`**: This script starts the Python subproject part, which handles data filtering, cleaning, and filling in. The script manages the Python virtual environment cross-platform (not fully tested on Mac/Linux).
+- **`npm run py`**: This script starts [the Python subproject part](./Python/), which handles data filtering, cleaning, and filling in. The script manages the Python virtual environment cross-platform (not fully tested on Mac/Linux).
 - **`npm run pg`**: This script runs your own test script (`thePlayGround.js`) to test various things.
 
 ## Story of the Project

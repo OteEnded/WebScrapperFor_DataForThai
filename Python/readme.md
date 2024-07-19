@@ -14,11 +14,11 @@ This subproject is responsible for data conversion, cleaning, and filling. It is
 
 ## Collaborators
 
-The collaborators for this subproject are the same as those for the parent project.
+The collaborators for this subproject are the same as those for [the parent project](../).
 
 ## Background
 
-This subproject is a remake of Bjesaya's project (available at [DataForThai_jupyter](https://github.com/jesaya-tr/DataForThai_jupyter)). The original project was designed for macOS (Linux) and used Anaconda as the Python environment manager, which made it incompatible with other systems, particularly Windows. To address this, I set up a manual Python virtual environment to ensure cross-platform compatibility (Windows/macOS/Linux), although it has not been fully tested on macOS/Linux.
+This subproject is a remake of [BJesaya](https://github.com/BJesaya)'s project (available at [DataForThai_jupyter](https://github.com/jesaya-tr/DataForThai_jupyter)). The original project was designed for macOS (Linux) and used Anaconda as the Python environment manager, which made it incompatible with other systems, particularly Windows. To address this, I set up a manual Python virtual environment to ensure cross-platform compatibility (Windows/macOS/Linux), although it has not been fully tested on macOS/Linux.
 
 As I am relatively new to managing Python virtual environments, I welcome any suggestions or feedback. Feel free to reach out to me through any contact method provided.
 
