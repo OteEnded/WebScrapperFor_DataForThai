@@ -1,21 +1,93 @@
 // Import dependencies
 const puppeteer = require('puppeteer');
+const { addExtra } = require('puppeteer-extra');
+const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+const randomUseragent = require('random-useragent');
+
 const fs = require('fs');
 const path = require('path');
+const { spawn } = require('child_process');
 
 const utilites = require('./theUtility.js');
+const theUtility = require('./theUtility.js');
 
 var delayTime = 0;
 
+// Add stealth plugin and use defaults (all tricks to hide puppeteer usage)
+const puppeteerExtra = addExtra(puppeteer);
+puppeteerExtra.use(StealthPlugin());
+
 // Function to connect to web and return page
 async function connectToWeb(url) {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+        headless: true, // Run in headful mode? (set to false for debugging)
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-accelerated-2d-canvas',
+            '--no-first-run',
+            '--no-zygote',
+            '--disable-gpu'
+        ]
+    });
+
     const page = await browser.newPage();
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
+    
+    // Randomize user agent
+    const userAgent = randomUseragent.getRandom();
+    await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36");
+
+    // Randomize viewport size
+    await page.setViewport({
+        width: Math.floor(Math.random() * (1920 - 1024 + 1)) + 1024,
+        height: Math.floor(Math.random() * (1080 - 768 + 1)) + 768,
+        deviceScaleFactor: 1
+    });
+
+    // Set additional headers
+    await page.setExtraHTTPHeaders({
+        'accept-language': 'en-US,en;q=0.9',
+        'accept-encoding': 'gzip, deflate, br'
+    });
+
+    // Set cookies
     await page.setCookie(utilites.getEnv().cookie);
-    await page.goto(url);
+
+    // Function to mimic human-like interaction
+    const mimicHumanInteraction = async () => {
+        await page.mouse.move(
+            Math.floor(Math.random() * 800) + 100,
+            Math.floor(Math.random() * 800) + 100
+        );
+        await theUtility.sleep(Math.floor(Math.random() * 2) + 1); // Wait between 1-3 seconds
+        await page.mouse.click(
+            Math.floor(Math.random() * 800) + 100,
+            Math.floor(Math.random() * 800) + 100,
+            { delay: Math.floor(Math.random() * 1000) + 200 } // Random delay for click
+        );
+    };
+
+    // Mimic human interactions before navigating to the page
+    await mimicHumanInteraction();
+
+    await page.goto(url, { waitUntil: 'networkidle2' });
+
+    // Mimic human interactions after navigation
+    await mimicHumanInteraction();
+
     return { browser, page };
 }
+
+// // Function to connect to web and return page
+// async function connectToWeb(url) {
+//     const browser = await puppeteer.launch();
+//     const page = await browser.newPage();
+//     await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36');
+//     await page.setCookie(utilites.getEnv().cookie);
+//     await page.goto(url);
+//     return { browser, page };
+// }
 
 // Function to close the connection
 async function closeConnection(browser) {
@@ -96,15 +168,31 @@ function checkIfDone(companyId, filePath) {
     return doneList.includes(utilites.decodeCompanyID(companyId));
 }
 
+
+// Function to restart the process
+function restartProcess() {
+    console.log('Restarting process...');
+    const scriptPath = path.resolve(__filename); // Get the absolute path to the script
+    spawn(process.execPath, [scriptPath], {
+        detached: true, // Run the new process in a separate session
+        stdio: 'inherit' // Use the same standard input/output as the parent process
+    });
+    process.exit(); // Exit the current process
+}
+
 const targetDir = "./Target/";
-const isSavePage = false;
+const isSavePage = true;
+let howManyThatWeGot = 0;
+
+process.on('exit', async (code) =>  {
+    utilites.debug("Process exit with code:", code);
+    utilites.debug("Total companies that we got:", howManyThatWeGot);
+}
+);
 
 // Main function
 (async () => {
     try {
-
-        let howManyThatWeGot = 0;
-
         for (let workingCatagoryFile of indexDirectories(workingList)){
             let workingCatagoryId = workingCatagoryFile.split('.')[0];
             utilites.debug("Working on catagory id:", workingCatagoryId);
@@ -144,12 +232,19 @@ const isSavePage = false;
                 const { browser, page } = await connectToWeb(url);
 
                 // save page's html to file
-                if (isSavePage) {
-                    // Get the HTML content of the page
+                try {
                     const htmlContent = await page.content();
-                    const filename = 'page.html';
-                    fs.writeFileSync(filename, htmlContent, 'utf8');
-                    console.log(`Page saved as ${filename}`);
+                    if (isSavePage) {
+                        theUtility.ensureDirectoryExistence('./Temp/');
+                        // Get the HTML content of the page
+                        const filename = './Temp/page.html';
+                        fs.writeFileSync(filename, htmlContent, 'utf8');
+                        console.log(`Page saved as ${filename}`);
+                    }
+                } catch (error) {
+                    utilites.debugError("Error in getting html content:", error);
+                    restartProcess(); // Restart the process in case of an error
+                    process.exit(1);
                 }
 
                 // Scrape specific table

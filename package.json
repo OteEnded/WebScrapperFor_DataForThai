@@ -17,6 +17,9 @@
   "dependencies": {
     "csv-parser": "^3.0.0",
     "node-notifier": "^10.0.1",
-    "puppeteer": "^22.11.0"
+    "puppeteer": "^22.13.1",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "random-useragent": "^0.5.0"
   }
 }
