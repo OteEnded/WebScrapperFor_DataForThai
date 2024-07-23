@@ -10,7 +10,6 @@ if __name__ != "__main__": print("Error: main.py is not as the main module."); e
 # print(f"Python main.py is called from {theUtility.cwd()}")
 
 import pandas
-import theUtility
 import os
 import webbrowser
 
@@ -112,10 +111,14 @@ month_dict = {
     ' พฤศจิกายน ': '/11/',
     ' ธันวาคม ': '/12/'
 }
-for key, value in month_dict.items(): stacking_result['วันที่จดทะเบียน'] = stacking_result['วันที่จดทะเบียน'].str.replace(key, value)
+for key, value in month_dict.items():
+    stacking_result['วันที่จดทะเบียน'] = stacking_result['วันที่จดทะเบียน'].str.replace(key, value)
+    stacking_result['วันที่จดทะเบียน(ชื่อเดือน)'] = stacking_result['วันที่จดทะเบียน(ชื่อเดือน)'].str.replace(value, key)
 
 stacking_result["ข้อมูลสำหรับการติดต่อ"] = stacking_result["ข้อมูลสำหรับติดต่อ"].str.startswith("ส")
 
+for index, row in stacking_result.iterrows():
+    if row["Website"] == "" and row["เว็บไซต์"] != "": stacking_result.at[index, "Website"] = row["เว็บไซต์"]
 
 stacking_result = stacking_result.reset_index(drop=True)
 colunm_order = [
@@ -230,10 +233,10 @@ for index, row in df_filling_in[last_cpmpany_index + 1:].iterrows():
             #     address = input("Enter address: ")
             address = address.replace(" ", "").strip()
             df_filling_in.at[index, "ที่ตั้ง"] = address
-    
-    print("== Data have been filled in. Drafted to data frame. ==")
 
+print(f"== Data have been filled in. Drafted to data frame. with last company id: {company_id} or index: {last_index} ==")
 theUtility.updateConfig((user, "lastProcess", "companyID"), company_id)
 theUtility.updateConfig((user, "lastProcess", "index"), last_index)
 
 df_filling_in.to_csv(os.path.join("..", "Result", f"result_{user}.csv"), index=False, encoding="utf-8")
+print(f"== Data have been saved to result_{user}.csv, and also updated progress's config. Program ended ==")
