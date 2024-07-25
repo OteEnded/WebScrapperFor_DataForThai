@@ -17,10 +17,12 @@ var delayTime = 0;
 const puppeteerExtra = addExtra(puppeteer);
 puppeteerExtra.use(StealthPlugin());
 
+
+const isHeadless =  utilites.getEnv().headless == null ? true : utilites.getEnv().headless;
 // Function to connect to web and return page
 async function connectToWeb(url) {
     const browser = await puppeteer.launch({
-        headless: true, // Run in headful mode? (set to false for debugging)
+        headless: isHeadless, // Run in headful mode? (set to false for debugging)
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
@@ -60,12 +62,12 @@ async function connectToWeb(url) {
             Math.floor(Math.random() * 800) + 100,
             Math.floor(Math.random() * 800) + 100
         );
-        await theUtility.sleep(Math.floor(Math.random() * 2) + 1); // Wait between 1-3 seconds
-        await page.mouse.click(
-            Math.floor(Math.random() * 800) + 100,
-            Math.floor(Math.random() * 800) + 100,
-            { delay: Math.floor(Math.random() * 1000) + 200 } // Random delay for click
-        );
+        // await theUtility.sleep(Math.floor(Math.random() * 2) + 1); // Wait between 1-3 seconds
+        // await page.mouse.click(
+        //     Math.floor(Math.random() * 800) + 100,
+        //     Math.floor(Math.random() * 800) + 100,
+        //     { delay: Math.floor(Math.random() * 1000) + 200 } // Random delay for click
+        // );
     };
 
     // Mimic human interactions before navigating to the page
@@ -243,7 +245,7 @@ process.on('exit', async (code) =>  {
                     }
                 } catch (error) {
                     utilites.debugError("Error in getting html content:", error);
-                    restartProcess(); // Restart the process in case of an error
+                    // restartProcess(); // Restart the process in case of an error
                     process.exit(1);
                 }
 
