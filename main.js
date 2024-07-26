@@ -37,7 +37,7 @@ async function connectToWeb(url) {
     const page = await browser.newPage();
     
     // Randomize user agent
-    const userAgent = randomUseragent.getRandom();
+    // const userAgent = randomUseragent.getRandom();
     await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36");
 
     // Randomize viewport size
