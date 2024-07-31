@@ -18,7 +18,7 @@ const puppeteerExtra = addExtra(puppeteer);
 puppeteerExtra.use(StealthPlugin());
 
 
-const isHeadless =  utilites.getEnv().headless == null ? true : utilites.getEnv().headless;
+const isHeadless =  utilites.getEnv()["previewpage"] == null ? true : !utilites.getEnv()["previewpage"];
 // Function to connect to web and return page
 async function connectToWeb(url) {
     const browser = await puppeteer.launch({

@@ -98,7 +98,7 @@ function readJsonFile(filePath, isDebug = true){
 }
 
 // Function to get .env data
-function getEnv() {
+function getEnv(key = null, withDefault = null) {
     return readJsonFile('.env.json', false);
 }
 
