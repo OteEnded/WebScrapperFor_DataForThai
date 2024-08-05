@@ -9,7 +9,9 @@
     "report": "node theProgressReporter.js",
     "count": "npm run report",
     "py": "node thePythonLauncher.js",
-    "pg": "node thePlayGround.js"
+    "pg": "node thePlayGround.js",
+    "cookie": "node theCookieSetter.js",
+    "setcookie": "node theCookieSetter.js"
   },
   "keywords": [],
   "author": "OteEnded",

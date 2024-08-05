@@ -271,6 +271,55 @@ function deleteDir(dirPath) {
     }
 }
 
+// Function to prase process arguments
+/**
+ * This function parse the process.argv and return an object with
+ * @param {array} processArgs - The process.argv
+ * @returns {object}
+ * the object contains:
+ * - (list) processArgs: the original process.argv
+ * - (string) node: the node path
+ * - (string) script: the script path
+ * - (object) parsed: the parsed arguments based on the argKeys
+ * 
+ *  Example:
+ * const argKeys = ['key1', 'key2', 'key3'];
+ * const parsedArgs = parseProcessArgs(process.argv, argKeys);
+ * parsedArgs = {
+ *     processArgs: process.argv,
+ *     node: process.argv[0],
+ *     script: process.argv[1],
+ *     parsed: {
+ *        key1: value1,
+ *        key2: value2,
+ *        key3: value3
+ *     }
+ * }
+ */
+function parseProcessArgs(processArgs = [], argKeys = []) {
+
+    let tempProcessArgs = Array.from(processArgs);
+
+    const argObj = {};
+    argObj["processArgs"] = tempProcessArgs;
+
+    for (i of ["node", "script"]){
+        argObj[i] = tempProcessArgs.shift();
+    }
+
+    const parsed = {};
+
+    debug(tempProcessArgs.length)
+
+    for (let i = 0; i < tempProcessArgs.length; i++){
+        parsed[argKeys[i]] = tempProcessArgs[i];
+    }
+
+    argObj["parsed"] = parsed;
+    
+    return argObj;
+} 
+
 module.exports = {
     readCSVToObj,
     decodeCompanyID,
@@ -290,5 +339,6 @@ module.exports = {
     listDirTree,
     selectValueFromOs,
     deleteDir,
-    debugError
+    debugError,
+    parseProcessArgs
 };
