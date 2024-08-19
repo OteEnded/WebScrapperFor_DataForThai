@@ -86,6 +86,8 @@ print("merged data and starting filtering")
 
 stacking_result['เบอร์โทร'] = ""
 
+# stacking_result.to_csv(os.path.join("temp.csv"), index=False, encoding="utf-8")
+
 stacking_result['ทุนจดทะเบียน'] = stacking_result['ทุนจดทะเบียน'].str.replace(',', '')
 stacking_result['ทุนจดทะเบียน'] = stacking_result['ทุนจดทะเบียน'].str.replace(' บาท', '')
 stacking_result['ทุนจดทะเบียน'] = pandas.to_numeric(stacking_result['ทุนจดทะเบียน'])
