@@ -10,8 +10,8 @@
     "count": "npm run report",
     "py": "node thePythonLauncher.js",
     "pg": "node thePlayGround.js",
-    "cookie": "node theCookieSetter.js",
-    "setcookie": "node theCookieSetter.js"
+    "setcookie": "node theCookieSetter.js",
+    "cookie": "npm run setcookie"
   },
   "keywords": [],
   "author": "OteEnded",
