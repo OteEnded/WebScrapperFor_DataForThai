@@ -254,7 +254,7 @@ process.on('exit', async (code) =>  {
                 let isContact = false;
                 if (specificTableData) {
                     utilites.debug('Specific Table Data:');
-                    utilites.debug(specificTableData);//'.. data collapsed (to see expanded data, remove comment at about line 151 from main function) ..'); // specificTableData);
+                    utilites.debug('.. data collapsed (to see expanded data, remove comment at about line 257 from main function) ..'); // specificTableData);
                     var loHolder = "";
                     let founderHolder = [];
                     let isFounder = false;
@@ -348,6 +348,13 @@ process.on('exit', async (code) =>  {
                     container['เลขทะเบียน'] = container["ทะเบียน"];
                     container["ทะเบียน"] = undefined;
                 }
+                for (let key in Object.keys(container)) {
+                    if (key.includes("\n")) {
+                        utilites.debug("Ignoring key:", key);
+                        container[key] = undefined;
+                    }
+                }
+
                 await closeConnection(browser);
 
                 utilites.debug("Writing data to file...");
