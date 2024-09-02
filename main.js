@@ -254,7 +254,7 @@ process.on('exit', async (code) =>  {
                 let isContact = false;
                 if (specificTableData) {
                     utilites.debug('Specific Table Data:');
-                    utilites.debug('.. data collapsed (to see expanded data, remove comment at about line 151 from main function) ..'); // specificTableData);
+                    utilites.debug(specificTableData);//'.. data collapsed (to see expanded data, remove comment at about line 151 from main function) ..'); // specificTableData);
                     var loHolder = "";
                     let founderHolder = [];
                     let isFounder = false;
@@ -344,6 +344,10 @@ process.on('exit', async (code) =>  {
                 container['ชื่อบริษัทภาษาไทย'] = h2Values[1].text;
                 container['ข้อมูลสำหรับการติดต่อ'] = isContact;
                 container['ที่มา'] = url;
+                if (container["ทะเบียน"] != undefined) {
+                    container['เลขทะเบียน'] = container["ทะเบียน"];
+                    container["ทะเบียน"] = undefined;
+                }
                 await closeConnection(browser);
 
                 utilites.debug("Writing data to file...");
@@ -365,5 +369,11 @@ process.on('exit', async (code) =>  {
         utilites.debug("Total companies that we got:", howManyThatWeGot);
     } catch (error) {
         utilites.debug('Error in main function:', error);
+    }
+    try {
+        await closeConnection(browser);
+    }
+    catch (error) {
+        utilites.debug('Cannot finalize the browser:', error);
     }
 })();
