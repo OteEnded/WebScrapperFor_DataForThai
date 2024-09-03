@@ -348,7 +348,7 @@ process.on('exit', async (code) =>  {
                     container['เลขทะเบียน'] = container["ทะเบียน"];
                     container["ทะเบียน"] = undefined;
                 }
-                for (let key in Object.keys(container)) {
+                for (let key of Object.keys(container)) {
                     if (key.includes("\n")) {
                         utilites.debug("Ignoring key:", key);
                         container[key] = undefined;
