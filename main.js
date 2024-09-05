@@ -336,6 +336,9 @@ process.on('exit', async (code) =>  {
                 if (!container["หมวดธุรกิจ"]){
                     container["หมวดธุรกิจ"] = container["ประกอบธุรกิจ"];
                     container["ประกอบธุรกิจ"] = "";
+                    if(container["หมวดธุรกิจ"].includes('หมวดธุรกิจ : ')){
+                        [container["ประกอบธุรกิจ"], container["หมวดธุรกิจ"]] = container["หมวดธุรกิจ"].split('หมวดธุรกิจ : ');
+                    }
                 }
 
                 const h2Values = await scrapeH2(page);
