@@ -329,12 +329,16 @@ process.on('exit', async (code) =>  {
                     process.exit(1);
                 }
 
-                // console.log(container)
+                console.log(container)
                 // console.log(container["หมวดธุรกิจ"])
                 // console.log(!container["หมวดธุรกิจ"])
                 
                 if (!container["หมวดธุรกิจ"]){
-                    container["หมวดธุรกิจ"] = container["ประกอบธุรกิจ"];
+                    if (!container["ประกอบธุรกิจ"]) {
+                        if (!container["ธุรกิจ"]) container["หมวดธุรกิจ"] = catagory['ประเภทธุรกิจ'];
+                        else container["หมวดธุรกิจ"] = container["ธุรกิจ"];
+                    }
+                    else container["หมวดธุรกิจ"] = container["ประกอบธุรกิจ"];
                     container["ประกอบธุรกิจ"] = "";
                     if(container["หมวดธุรกิจ"].includes('หมวดธุรกิจ : ')){
                         [container["ประกอบธุรกิจ"], container["หมวดธุรกิจ"]] = container["หมวดธุรกิจ"].split('หมวดธุรกิจ : ');
