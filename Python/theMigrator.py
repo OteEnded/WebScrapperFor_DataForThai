@@ -28,10 +28,15 @@ for user in ["b", "o"]:
             
             # Fill missing values in the main DataFrame
             for column in columns_to_fill:
-                if pd.isna(row[column]) or row[column] in ["", "None", np.nan]:
-                    if not pd.isna(filler_row[column]) and filler_row[column] not in ["", "None", np.nan]:
-                        main_df.at[index, column] = filler_row[column]
-                        updated_rows += 1
+                try:
+                    # print(column)
+                    # print(row[column])
+                    if pd.isna(row[column]) or row[column] in ["", "None", np.nan]:
+                        if not pd.isna(filler_row[column]) and filler_row[column] not in ["", "None", np.nan]:
+                            main_df.at[index, column] = filler_row[column]
+                            updated_rows += 1
+                except Exception as e:
+                    print(f"Error occurred while filling column '{column}' for companyID '{company_id}': {e}")
 
     # Save the updated main DataFrame back to a CSV file
     main_df.to_csv(os.path.join("..","Result", f"result_{user}.csv"), index=False, encoding="utf-8")
