@@ -4,37 +4,49 @@ This project is a web scraper program for a specific website called DataForThai 
 
 ## Collaborators
 
-- [OteEnded](https://github.com/OteEnded) [Project Lead, JavaScript Development]
-- [BJesaya](https://github.com/BJesaya) or [jesaya-tr](https://github.com/jesaya-tr) [Data Scientist, Data Analysis & Data Acquisition]
+- [OteEnded](https://github.com/OteEnded) - Project Lead, JavaScript Development
+- [BJesaya](https://github.com/BJesaya) or [jesaya-tr](https://github.com/jesaya-tr) - Data Scientist, Data Analysis & Data Acquisition
+
+## Requirements
+
+- **Node.js**: Version 18 or higher. [Download Node.js](https://nodejs.org/en/download/)
+- **Python**: Version 3.9 or higher. [Download Python](https://www.python.org/downloads/)
 
 ## How to Use This Project
 
 Follow these steps to run this project:
 
-1. Clone the repository: 
-    ```
+1. **Clone the repository**:
+    ```sh
     git clone <repository_url>
     ```
-2. Install Node.js (major version 18). You can download it from [here](https://nodejs.org/en/download/).
-3. Navigate to the root of the project using the terminal:
+2. **Install Node.js** (version 18 or higher). You can download it from [here](https://nodejs.org/en/download/).
+3. **Navigate to the root of the project** using the terminal:
+    ```sh
+    cd <path_to_project>
     ```
-    cd path_to_project
-    ```
-4. Install the necessary packages:
-    ```
+4. **Install the necessary packages**:
+    ```sh
     npm install
     ```
-5. Acquire a login token from [DataForThai](https://www.dataforthai.com/).
-6. Rename the `.env-example.json` file to `.env.json` and replace the `value` key in the `cookie` object with your token.
-7. Move the company ID list by category that you want to scrape from `./DataForThaiCompanyIdsByCategories` to `./Assigned`.
-8. Run `main.js` or type in the terminal:
-    ```
+5. **Acquire a login token (PHPSESSID)** from [DataForThai](https://www.dataforthai.com/):
+    1. Go to [DataForThai](https://www.dataforthai.com/).
+    2. Register and log in to your account.
+    3. Open the Inspect menu from your browser (usually by right-clicking and selecting "Inspect" or pressing `F12`).
+    4. Navigate to the "Application" tab.
+    5. Select "Cookies" and find `www.dataforthai.com`.
+    6. Find the cookie with the key `PHPSESSID` and copy the value.
+6. **Rename the `.env-example.json` file to `.env.json`** and replace the `value` key in the `cookie` object with your token.
+7. **Move the company ID list by category** that you want to scrape from `./DataForThaiCompanyIdsByCategories` to `./Assigned`.
+8. **Run `main.js`** or type in the terminal:
+    ```sh
     npm start
     ```
-9. Wait until the process is done. The results will be in the `./Target` directory as JSON files.
-10. Import/convert the JSON files to your desired format. You can convert them to a DataFrame in pandas to process the data further.
+    or for Windows run the `start.bat`
+9. **Wait until the process is done**. The results will be in the `./Target` directory as JSON files.
+10. **Import/convert the JSON files** to your desired format. You can convert them to a DataFrame in pandas to process the data further.
 
-## npm scripts
+## npm Scripts
 
 The project includes several npm scripts to help manage and run different parts of the project:
 
